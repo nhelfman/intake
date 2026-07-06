@@ -32,11 +32,9 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
     if (search.trim()) setTab('search');
   }, [search]);
 
-  const getServings = (foodId: number) => servings[foodId] ?? 1;
-
   const handleLog = useCallback(
     async (food: Food) => {
-      const s = getServings(food.id!);
+      const s = servings[food.id!] ?? 1;
       const entry = await addEntry(food, s);
       onEntryAdded(entry, food.name);
       onRefresh();
@@ -169,7 +167,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
             <FoodRow
               key={food.id}
               food={food}
-              servings={getServings(food.id!)}
+              servings={servings[food.id!] ?? 1}
               onServingsChange={(v) =>
                 setServings((prev) => ({ ...prev, [food.id!]: v }))
               }
