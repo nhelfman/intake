@@ -35,6 +35,11 @@ npm run build
 
 ## Deployment
 
-Automatically deployed to GitHub Pages via GitHub Actions on push to `main`.
+Deploy using GitHub Pages "Deploy from a branch":
+
+1. Run `npm install` if needed.
+2. Run `npm run build` to generate the static site in `/docs`.
+3. Commit the updated `/docs` contents to `main`.
+4. In GitHub repository settings, set Pages to deploy from the `main` branch `/docs` folder.
 
 Live at: https://nhelfman.github.io/intake/
