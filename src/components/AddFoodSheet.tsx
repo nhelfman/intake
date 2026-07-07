@@ -104,12 +104,12 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
         }}
       >
         {/* Handle */}
-        <div className="flex justify-center pt-3 pb-1">
+        <div className="shrink-0 flex justify-center pt-3 pb-1">
           <div className="w-10 h-1 bg-gray-200 rounded-full" />
         </div>
 
         {/* Title & close */}
-        <div className="px-4 pb-2 flex items-center justify-between">
+        <div className="shrink-0 px-4 pb-2 flex items-center justify-between">
           <h2 className="text-lg font-bold text-gray-900">Add Food</h2>
           <button
             onClick={onClose}
@@ -120,7 +120,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
         </div>
 
         {/* Search input */}
-        <div className="px-4 pb-2">
+        <div className="shrink-0 px-4 pb-2">
           <input
             ref={searchRef}
             type="search"
@@ -132,7 +132,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
         </div>
 
         {/* Tabs */}
-        <div className="px-4 pb-2 flex gap-1 overflow-x-auto scrollbar-none">
+        <div className="shrink-0 px-4 pb-2 flex gap-1 overflow-x-auto scrollbar-none">
           {tabs.map((t) => (
             <button
               key={t.key}
@@ -149,7 +149,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
         </div>
 
         {/* Food list */}
-        <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-2">
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4 space-y-2">
           {displayFoods.length === 0 && (
             <div className="text-center text-gray-400 py-8">
               {tab === 'quick' && (
