@@ -82,18 +82,51 @@ export async function getEntriesForDay(dayKey: string): Promise<Entry[]> {
   return db.entries.where('dayKey').equals(dayKey).toArray();
 }
 
+export interface AddEntryResult {
+  entry: Entry;
+  /** Set when an existing entry was updated rather than a new one created, for undo purposes. */
+  previousEntry?: Entry;
+}
+
 export async function addEntry(
   food: Food,
   servings: number
-): Promise<Entry> {
+): Promise<AddEntryResult> {
   const now = Date.now();
+  const day = todayKey();
+
+  // Check if an entry for this food already exists today
+  const existing = await db.entries
+    .where('dayKey')
+    .equals(day)
+    .filter((e) => e.foodId === food.id!)
+    .first();
+
+  if (existing) {
+    const previousEntry = { ...existing };
+    const newServings = existing.servings + servings;
+    const updates = {
+      servings: newServings,
+      calories: Math.round(food.calories * newServings),
+      protein: Math.round(food.protein * newServings * 10) / 10,
+      timestamp: now,
+    };
+    await db.entries.update(existing.id!, updates);
+    const entry: Entry = { ...existing, ...updates };
+    await db.foods.update(food.id!, {
+      usageCount: (food.usageCount || 0) + 1,
+      lastUsed: now,
+    });
+    return { entry, previousEntry };
+  }
+
   const entry: Entry = {
     foodId: food.id!,
     servings,
     calories: Math.round(food.calories * servings),
     protein: Math.round(food.protein * servings * 10) / 10,
     timestamp: now,
-    dayKey: todayKey(),
+    dayKey: day,
   };
   entry.id = await db.entries.add(entry);
   // Update food stats
@@ -101,7 +134,7 @@ export async function addEntry(
     usageCount: (food.usageCount || 0) + 1,
     lastUsed: now,
   });
-  return entry;
+  return { entry };
 }
 
 export async function deleteEntry(id: number): Promise<void> {

@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, addEntry, quickPickScore, type Food, type Entry } from '../db';
+import { db, addEntry, quickPickScore, type Food } from '../db';
+import type { AddEntryResult } from '../db';
 import FoodFormModal from './FoodFormModal';
 import useVisualKeyboardOffset from './useVisualKeyboardOffset';
 
 interface AddFoodSheetProps {
   onClose: () => void;
-  onEntryAdded: (entry: Entry, foodName: string) => void;
+  onEntryAdded: (result: AddEntryResult, foodName: string) => void;
   onRefresh: () => void;
 }
 
@@ -37,8 +38,8 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
   const handleLog = useCallback(
     async (food: Food) => {
       const s = servings[food.id!] ?? 1;
-      const entry = await addEntry(food, s);
-      onEntryAdded(entry, food.name);
+      const result = await addEntry(food, s);
+      onEntryAdded(result, food.name);
       onRefresh();
       // Reset servings for this food
       setServings((prev) => {
