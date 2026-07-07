@@ -8,6 +8,7 @@ import {
   dateKey,
   type Entry,
   type Settings,
+  type AddEntryResult,
 } from '../db';
 import AddFoodSheet from '../components/AddFoodSheet';
 import UndoToast from '../components/UndoToast';
@@ -29,6 +30,7 @@ export default function TodayPage() {
   const [showAddSheet, setShowAddSheet] = useState(false);
   const [undoEntry, setUndoEntry] = useState<Entry | null>(null);
   const [undoFoodName, setUndoFoodName] = useState('');
+  const [undoPreviousEntry, setUndoPreviousEntry] = useState<Entry | null>(null);
 
   const day = dateKey(currentDate);
 
@@ -51,16 +53,33 @@ export default function TodayPage() {
   const totalCalories = entries.reduce((s, e) => s + e.calories, 0);
   const totalProtein = entries.reduce((s, e) => s + e.protein, 0);
 
-  const handleEntryAdded = (entry: Entry, foodName: string) => {
+  const handleEntryAdded = ({ entry, previousEntry }: AddEntryResult, foodName: string) => {
     setUndoEntry(entry);
     setUndoFoodName(foodName);
+    setUndoPreviousEntry(previousEntry ?? null);
   };
 
   const handleUndo = async () => {
     if (undoEntry?.id) {
-      await deleteEntry(undoEntry.id);
+      if (undoPreviousEntry) {
+        // Revert the updated entry to its previous state
+        await db.entries.update(undoEntry.id, {
+          servings: undoPreviousEntry.servings,
+          calories: undoPreviousEntry.calories,
+          protein: undoPreviousEntry.protein,
+          timestamp: undoPreviousEntry.timestamp,
+        });
+      } else {
+        await deleteEntry(undoEntry.id);
+      }
     }
     setUndoEntry(null);
+    setUndoPreviousEntry(null);
+  };
+
+  const handleUndoDismiss = () => {
+    setUndoEntry(null);
+    setUndoPreviousEntry(null);
   };
 
   const handleDeleteEntry = async (id: number) => {
@@ -181,7 +200,7 @@ export default function TodayPage() {
         <UndoToast
           message={`Added ${undoFoodName}`}
           onUndo={handleUndo}
-          onDismiss={() => setUndoEntry(null)}
+          onDismiss={handleUndoDismiss}
         />
       )}
     </div>
