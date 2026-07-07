@@ -49,33 +49,33 @@ export default function FoodFormModal({ food, onClose }: FoodFormModalProps) {
 
       {/* Modal */}
       <div
-        className="fixed inset-x-4 top-1/2 -translate-y-1/2 w-auto max-w-sm mx-auto bg-white rounded-2xl shadow-2xl z-60 p-5 overflow-y-auto"
+        className="fixed inset-x-4 top-1/2 -translate-y-1/2 w-auto max-w-sm mx-auto bg-white dark:bg-gray-950 rounded-2xl shadow-2xl z-60 p-5 overflow-y-auto"
         style={{
           marginTop: keyboardOffset ? `-${Math.round(keyboardOffset / 2)}px` : undefined,
           maxHeight: `calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - ${keyboardOffset}px - 32px)`,
         }}
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-gray-900">
+          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
             {isEdit ? 'Edit Food' : 'New Food'}
           </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 p-1">✕</button>
+          <button onClick={onClose} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 p-1">✕</button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name *</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Chicken breast"
-              className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               autoFocus
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Calories (kcal) *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Calories (kcal) *</label>
             <input
               type="number"
               inputMode="decimal"
@@ -83,11 +83,11 @@ export default function FoodFormModal({ food, onClose }: FoodFormModalProps) {
               onChange={(e) => setCalories(e.target.value)}
               placeholder="e.g. 165"
               min={0}
-              className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Protein (g) *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Protein (g) *</label>
             <input
               type="number"
               inputMode="decimal"
@@ -96,17 +96,17 @@ export default function FoodFormModal({ food, onClose }: FoodFormModalProps) {
               placeholder="e.g. 31"
               min={0}
               step={0.1}
-              className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Serving name</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Serving name</label>
             <input
               type="text"
               value={servingName}
               onChange={(e) => setServingName(e.target.value)}
               placeholder="e.g. 100g, cup, piece"
-              className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             />
           </div>
 
@@ -118,7 +118,7 @@ export default function FoodFormModal({ food, onClose }: FoodFormModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2.5 border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50"
+              className="flex-1 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               Cancel
             </button>

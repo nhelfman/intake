@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 html,
 body,
 #root {
@@ -9,6 +11,11 @@ body,
 body {
   margin: 0;
   overflow-x: hidden;
+  background: #f9fafb;
+}
+
+.dark body {
+  background: #111827;
 }
 
 input:not([type="file"]),

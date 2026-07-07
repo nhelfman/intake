@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { getSettings, saveSettings, exportData, importData, type Settings } from '../db';
+import { defaultSettings, getSettings, saveSettings, exportData, importData, type Settings, type ThemePreference } from '../db';
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState<Settings>({ calorieGoal: 2000, proteinGoal: 150 });
+  const [settings, setSettings] = useState<Settings>(defaultSettings);
   const [saved, setSaved] = useState(false);
   const [importMsg, setImportMsg] = useState('');
 
@@ -15,6 +15,11 @@ export default function SettingsPage() {
     await saveSettings(settings);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handleThemeChange = async (themePreference: ThemePreference) => {
+    setSettings((s) => ({ ...s, themePreference }));
+    await saveSettings({ themePreference });
   };
 
   const handleExport = async () => {
@@ -43,18 +48,18 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <div className="bg-white shadow-sm px-4 pt-12 pb-4">
-        <h1 className="text-xl font-bold text-gray-900">Settings</h1>
+    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="bg-white dark:bg-gray-950 shadow-sm px-4 pt-12 pb-4">
+        <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Settings</h1>
       </div>
 
       <div className="px-4 py-4 space-y-4">
         {/* Goals */}
-        <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm p-4">
-          <h2 className="font-semibold text-gray-700 mb-4">Daily Goals</h2>
+        <form onSubmit={handleSave} className="bg-white dark:bg-gray-950 rounded-xl shadow-sm p-4">
+          <h2 className="font-semibold text-gray-700 dark:text-gray-200 mb-4">Daily Goals</h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Calorie Goal (kcal)
               </label>
               <input
@@ -65,11 +70,11 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   setSettings((s) => ({ ...s, calorieGoal: Number(e.target.value) }))
                 }
-                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Protein Goal (g)
               </label>
               <input
@@ -80,8 +85,29 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   setSettings((s) => ({ ...s, proteinGoal: Number(e.target.value) }))
                 }
-                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Theme
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {(['system', 'light', 'dark'] as ThemePreference[]).map((theme) => (
+                  <button
+                    key={theme}
+                    type="button"
+                    onClick={() => handleThemeChange(theme)}
+                    className={`py-2 rounded-xl text-sm font-medium capitalize transition-colors ${
+                      (settings.themePreference ?? 'system') === theme
+                        ? 'bg-emerald-500 text-white'
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    {theme}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
           <button
@@ -93,17 +119,17 @@ export default function SettingsPage() {
         </form>
 
         {/* Export / Import */}
-        <div className="bg-white rounded-xl shadow-sm p-4">
-          <h2 className="font-semibold text-gray-700 mb-4">Data Backup</h2>
+        <div className="bg-white dark:bg-gray-950 rounded-xl shadow-sm p-4">
+          <h2 className="font-semibold text-gray-700 dark:text-gray-200 mb-4">Data Backup</h2>
           <div className="space-y-3">
             <button
               onClick={handleExport}
-              className="w-full border border-emerald-500 text-emerald-600 py-2.5 rounded-xl font-medium hover:bg-emerald-50 transition-colors"
+              className="w-full border border-emerald-500 text-emerald-600 dark:text-emerald-400 py-2.5 rounded-xl font-medium hover:bg-emerald-50 dark:hover:bg-emerald-950 transition-colors"
             >
               📤 Export Data (JSON)
             </button>
             <label className="block">
-              <span className="w-full flex items-center justify-center border border-gray-300 text-gray-700 py-2.5 rounded-xl font-medium hover:bg-gray-50 transition-colors cursor-pointer">
+              <span className="w-full flex items-center justify-center border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 py-2.5 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
                 📥 Import Data (JSON)
               </span>
               <input
@@ -114,19 +140,19 @@ export default function SettingsPage() {
               />
             </label>
             {importMsg && (
-              <p className="text-sm text-center text-gray-600">{importMsg}</p>
+              <p className="text-sm text-center text-gray-600 dark:text-gray-300">{importMsg}</p>
             )}
           </div>
         </div>
 
         {/* App info */}
-        <div className="bg-white rounded-xl shadow-sm p-4">
-          <h2 className="font-semibold text-gray-700 mb-2">About</h2>
-          <p className="text-sm text-gray-500">
+        <div className="bg-white dark:bg-gray-950 rounded-xl shadow-sm p-4">
+          <h2 className="font-semibold text-gray-700 dark:text-gray-200 mb-2">About</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Intake — offline-first nutrition tracker.
             All data is stored locally in your browser.
           </p>
-          <p className="text-xs text-gray-400 mt-2">v1.0.0</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">v1.0.0</p>
         </div>
       </div>
     </div>

@@ -25,7 +25,16 @@ export interface Settings {
   id?: number;
   calorieGoal: number;
   proteinGoal: number;
+  themePreference?: ThemePreference;
 }
+
+export type ThemePreference = 'system' | 'light' | 'dark';
+
+export const defaultSettings: Omit<Settings, 'id'> = {
+  calorieGoal: 2000,
+  proteinGoal: 150,
+  themePreference: 'system',
+};
 
 export class IntakeDB extends Dexie {
   foods!: Table<Food>;
@@ -47,9 +56,9 @@ export const db = new IntakeDB();
 // Helpers
 export async function getSettings(): Promise<Settings> {
   const s = await db.settings.toArray();
-  if (s.length > 0) return s[0];
-  const id = await db.settings.add({ calorieGoal: 2000, proteinGoal: 150 });
-  return { id, calorieGoal: 2000, proteinGoal: 150 };
+  if (s.length > 0) return { ...defaultSettings, ...s[0] };
+  const id = await db.settings.add(defaultSettings);
+  return { id, ...defaultSettings };
 }
 
 export async function saveSettings(s: Partial<Settings>): Promise<void> {
@@ -57,7 +66,7 @@ export async function saveSettings(s: Partial<Settings>): Promise<void> {
   if (existing.length > 0) {
     await db.settings.update(existing[0].id!, s);
   } else {
-    await db.settings.add({ calorieGoal: 2000, proteinGoal: 150, ...s });
+    await db.settings.add({ ...defaultSettings, ...s });
   }
 }
 

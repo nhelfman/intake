@@ -96,7 +96,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
 
       {/* Sheet */}
       <div
-        className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-lg bg-white rounded-t-3xl z-50 flex flex-col shadow-2xl"
+        className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-lg bg-white dark:bg-gray-950 rounded-t-3xl z-50 flex flex-col shadow-2xl"
         style={{
           bottom: keyboardOffset,
           maxHeight: `min(85dvh, calc(100vh - env(safe-area-inset-top) - ${keyboardOffset}px - 12px))`,
@@ -105,15 +105,15 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
       >
         {/* Handle */}
         <div className="shrink-0 flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 bg-gray-200 rounded-full" />
+          <div className="w-10 h-1 bg-gray-200 dark:bg-gray-700 rounded-full" />
         </div>
 
         {/* Title & close */}
         <div className="shrink-0 px-4 pb-2 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-gray-900">Add Food</h2>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Add Food</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 p-1"
+            className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 p-1"
           >
             ✕
           </button>
@@ -127,7 +127,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
             placeholder="Search foods..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-4 py-2.5 bg-gray-100 rounded-xl text-base text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full px-4 py-2.5 bg-gray-100 dark:bg-gray-800 rounded-xl text-base text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:ring-2 focus:ring-emerald-400"
           />
         </div>
 
@@ -140,7 +140,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
               className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
                 tab === t.key
                   ? 'bg-emerald-500 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               {t.label}
@@ -151,7 +151,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
         {/* Food list */}
         <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4 space-y-2">
           {displayFoods.length === 0 && (
-            <div className="text-center text-gray-400 py-8">
+            <div className="text-center text-gray-400 dark:text-gray-500 py-8">
               {tab === 'quick' && (
                 <p className="text-sm">Log foods to see Quick Picks here.</p>
               )}
@@ -185,7 +185,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
           {/* Create new food button */}
           <button
             onClick={() => setShowCreate(true)}
-            className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-sm text-gray-500 hover:border-emerald-400 hover:text-emerald-600 transition-colors mt-2"
+            className="w-full py-3 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-500 dark:text-gray-400 hover:border-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors mt-2"
           >
             + Create new food
           </button>
@@ -210,10 +210,10 @@ interface FoodRowProps {
 
 function FoodRow({ food, servings, onServingsChange, onLog }: FoodRowProps) {
   return (
-    <div className="bg-gray-50 rounded-xl px-3 py-2.5 flex items-center gap-3">
+    <div className="bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2.5 flex items-center gap-3">
       <div className="flex-1 min-w-0">
-        <div className="font-medium text-gray-900 text-sm truncate">{food.name}</div>
-        <div className="text-xs text-gray-500">
+        <div className="font-medium text-gray-900 dark:text-gray-100 text-sm truncate">{food.name}</div>
+        <div className="text-xs text-gray-500 dark:text-gray-400">
           {Math.round(food.calories * servings)} kcal · {(food.protein * servings).toFixed(1)}g protein · {food.servingName}
         </div>
       </div>
@@ -222,16 +222,16 @@ function FoodRow({ food, servings, onServingsChange, onLog }: FoodRowProps) {
       <div className="flex items-center gap-1.5 shrink-0">
         <button
           onClick={() => onServingsChange(Math.max(0.5, servings - 0.5))}
-          className="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm flex items-center justify-center"
+          className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm flex items-center justify-center"
         >
           −
         </button>
-        <span className="text-sm font-medium text-gray-700 w-8 text-center">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-200 w-8 text-center">
           {servings % 1 === 0 ? servings : servings.toFixed(1)}
         </span>
         <button
           onClick={() => onServingsChange(servings + 0.5)}
-          className="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm flex items-center justify-center"
+          className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm flex items-center justify-center"
         >
           +
         </button>
