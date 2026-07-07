@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, addEntry, quickPickScore, type Food, type Entry } from '../db';
 import FoodFormModal from './FoodFormModal';
+import useVisualKeyboardOffset from './useVisualKeyboardOffset';
 
 interface AddFoodSheetProps {
   onClose: () => void;
@@ -16,6 +17,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
   const [search, setSearch] = useState('');
   const [showCreate, setShowCreate] = useState(false);
   const [servings, setServings] = useState<Record<number, number>>({});
+  const keyboardOffset = useVisualKeyboardOffset();
   const searchRef = useRef<HTMLInputElement>(null);
   const hourOfDay = new Date().getHours();
 
@@ -96,7 +98,8 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
       <div
         className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-lg bg-white rounded-t-3xl z-50 flex flex-col shadow-2xl"
         style={{
-          maxHeight: 'min(85dvh, calc(100vh - env(safe-area-inset-top) - 12px))',
+          bottom: keyboardOffset,
+          maxHeight: `min(85dvh, calc(100vh - env(safe-area-inset-top) - ${keyboardOffset}px - 12px))`,
           paddingBottom: 'env(safe-area-inset-bottom)',
         }}
       >
