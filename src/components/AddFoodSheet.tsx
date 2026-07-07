@@ -93,8 +93,12 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
       />
 
       {/* Sheet */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-white rounded-t-3xl z-50 flex flex-col shadow-2xl"
-        style={{ maxHeight: '85vh' }}
+      <div
+        className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-lg bg-white rounded-t-3xl z-50 flex flex-col shadow-2xl"
+        style={{
+          maxHeight: 'min(85dvh, calc(100vh - env(safe-area-inset-top) - 12px))',
+          paddingBottom: 'env(safe-area-inset-bottom)',
+        }}
       >
         {/* Handle */}
         <div className="flex justify-center pt-3 pb-1">
@@ -120,7 +124,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
             placeholder="Search foods..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-4 py-2.5 bg-gray-100 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full px-4 py-2.5 bg-gray-100 rounded-xl text-base text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-emerald-400"
           />
         </div>
 

@@ -46,7 +46,10 @@ export default function FoodFormModal({ food, onClose }: FoodFormModalProps) {
       <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose} />
 
       {/* Modal */}
-      <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 max-w-sm mx-auto bg-white rounded-2xl shadow-2xl z-60 p-5">
+      <div
+        className="fixed inset-x-4 top-1/2 -translate-y-1/2 w-auto max-w-sm mx-auto bg-white rounded-2xl shadow-2xl z-60 p-5 overflow-y-auto"
+        style={{ maxHeight: 'calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 32px)' }}
+      >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-gray-900">
             {isEdit ? 'Edit Food' : 'New Food'}

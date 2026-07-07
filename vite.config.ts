@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/intake/',
+  base: './',
   build: {
     outDir: 'docs',
     emptyOutDir: true,
@@ -44,7 +44,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-        navigateFallback: '/intake/index.html',
+        navigateFallback: 'index.html',
       },
     }),
   ],
