@@ -102,6 +102,7 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
           bottom: keyboardOffset,
           maxHeight: `min(85dvh, calc(100vh - env(safe-area-inset-top) - ${keyboardOffset}px - 12px))`,
           paddingBottom: 'env(safe-area-inset-bottom)',
+          transition: 'bottom 0.2s ease-out, max-height 0.2s ease-out',
         }}
       >
         {/* Handle */}
