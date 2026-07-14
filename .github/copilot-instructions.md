@@ -14,10 +14,12 @@ This outputs the production build to `docs/`, which is the folder served by GitH
 
 1. Make source changes.
 2. Run `npm run build` — this runs TypeScript compilation (`tsc -b`) followed by Vite build.
-3. Stage and commit both the source changes **and** the updated `docs/` directory together.
+   - `vite.config.ts` sets `emptyOutDir: true`, so the build **automatically deletes all previous artifacts** in `docs/` before writing fresh ones. You do not need to manually clear `docs/` first.
+3. Stage and commit both the source changes **and** the entire updated `docs/` directory together (including any deleted files, via `git add docs/`).
 
 ### Why
 
 - GitHub Pages is configured to deploy from the `docs/` folder on the `main` branch (see `vite.config.ts` `outDir: 'docs'`).
 - There is no CI build step that regenerates `docs/` automatically; the committed artifacts are what gets served.
 - Failing to rebuild means the live site will be out of date with the source code.
+- The `emptyOutDir: true` option ensures stale files from previous builds are never left behind.
