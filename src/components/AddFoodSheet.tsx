@@ -47,7 +47,8 @@ export default function AddFoodSheet({ onClose, onEntryAdded, onRefresh }: AddFo
         delete next[food.id!];
         return next;
       });
-      // Keep panel open, keep focus in search
+      // Keep panel open, clear search and refocus so user can type next query
+      setSearch('');
       searchRef.current?.focus();
     },
     [servings, onEntryAdded, onRefresh]
